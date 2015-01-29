@@ -1,6 +1,8 @@
 package com.example.rifaz.seacityapp;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.nfc.NfcAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity
@@ -37,6 +40,15 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Verifying if device has NFC adapter
+
+        if (hasNFC()){
+            Toast.makeText(this, "NFC is available.", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(this, "NFC is not available on this device. The application may not work properly.", Toast.LENGTH_LONG).show();
+        }
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -47,6 +59,13 @@ public class MainActivity extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
+    boolean hasNFC(){
+        boolean hasFeature = getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC);
+        boolean isEnabled = NfcAdapter.getDefaultAdapter(this).isEnabled();
+
+        return hasFeature && isEnabled;
+    }
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
@@ -54,15 +73,18 @@ public class MainActivity extends ActionBarActivity
 
         switch (position){
             case 0:
-                objFragment = new fragment_location();
+                objFragment = new fragment_home();
                 break;
             case 1:
-                objFragment = new fragment_progress();
+                objFragment = new fragment_location();
                 break;
             case 2:
-                objFragment = new fragment_translator();
+                objFragment = new fragment_progress();
                 break;
             case 3:
+                objFragment = new fragment_translator();
+                break;
+            case 4:
                 objFragment = new fragment_screenreader();
                 break;
 
@@ -128,6 +150,7 @@ public class MainActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -156,7 +179,7 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.activity_main, container, false);
             return rootView;
         }
 
