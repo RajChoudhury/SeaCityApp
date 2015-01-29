@@ -49,26 +49,48 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+
+        Fragment objFragment = null;
+
+        switch (position){
+            case 0:
+                objFragment = new fragment_location();
+                break;
+            case 1:
+                objFragment = new fragment_progress();
+                break;
+            case 2:
+                objFragment = new fragment_translator();
+                break;
+            case 3:
+                objFragment = new fragment_screenreader();
+                break;
+
+        }
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container,objFragment)
                 .commit();
     }
 
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.title_location);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.title_progresstracker);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.title_progress);
+                break;
+            case 4:
+                mTitle = getString(R.string.title_screenreader);
                 break;
         }
     }
+
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
